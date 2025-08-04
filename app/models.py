@@ -8,7 +8,7 @@ Base = declarative_base()
 class Guide(Base):
     __tablename__ = "guides"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column (String(50), nullable=False)
     description: Mapped[str] = mapped_column(String(300), nullable=False)
     category: Mapped[str] = mapped_column(nullable=False)
@@ -18,11 +18,11 @@ class Guide(Base):
 class Track(Base):
     __tablename__ = "tracks"
 
-    id: Mapped[int] = mapped_column(autoincrement=False)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(String(50), nullable=False)
     file_path: Mapped[str] = mapped_column(nullable=False)
     duration: Mapped[float] = mapped_column(nullable=False)
     order_num: Mapped[int] = mapped_column(nullable=False)
 
-    guide_id: Mapped[int] = ForeignKey("guides.id")
+    guide_id: Mapped[int] = mapped_column(ForeignKey("guides.id"))
     guide: Mapped["Guide"] = relationship(back_populates="tracks")
