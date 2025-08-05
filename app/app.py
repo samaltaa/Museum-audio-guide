@@ -6,12 +6,16 @@ from schemas import GuideCreate, TrackCreate
 
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+
 
 DATABASE_URL = "postgresql://altagrasa:pinkelephant@localhost:5432/altagrasa" 
 database = Database(DATABASE_URL)
 
 app = FastAPI()
 templates = Jinja2Templates(directory="../templates")
+app.mount("/static", StaticFiles(directory="../static"), name="static")
+
 
 @app.on_event("startup")
 async def startup():
@@ -29,6 +33,14 @@ async def health():
     return {"status": "ok"}
 
 # Routes for guides 
+@app.get("/", response_class=HTMLResponse)
+async def homepage(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="base.html",
+        context={}
+    )
+
 @app.post("/guides/")
 async def post_guide(payload: GuideCreate):
     guide_query = Guide.__table__.insert().values(
