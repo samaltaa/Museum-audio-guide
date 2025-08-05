@@ -12,9 +12,19 @@
         
         <header class="header">
             <div class="title-section">
-                <img src="https://kutubuarts.com/cdn/shop/files/250506_Kutubu_Web_Product_CrossRiverBust01.png?v=1746575832" alt="Historical artifact" class="artifact-img">
+                {% if guide.category.lower() == 'sokoto' %}
+                    <img src="https://kutubuarts.com/cdn/shop/files/250506_Kutubu_Web_Product_CrossRiverBust01.png?v=1746575832" alt="Sokoto artifact" class="artifact-img">
+                {% elif guide.category.lower() == 'tang' %}
+                    <img src="https://arthistoryproject.com/site/assets/files/30192/tang-dynasty-zhenmushou-tomb-guardian-740-obelisk-art-history.png" alt="Tang artifact" class="artifact-img">
+                {% endif %}
+                
                 <h1>{{ guide.title }}</h1>
-                <img src="https://kutubuarts.com/cdn/shop/files/250430_Kutubu_Web_Product_GolaHelmetMask01_579d4b21-be04-4d1d-aa2a-8f8d74345dd0.png?v=1746054675" alt="Historical artifact" class="artifact-img">
+                
+                {% if guide.category.lower() == 'sokoto' %}
+                    <img src="https://kutubuarts.com/cdn/shop/files/250430_Kutubu_Web_Product_GolaHelmetMask01_579d4b21-be04-4d1d-aa2a-8f8d74345dd0.png?v=1746054675" alt="Sokoto artifact" class="artifact-img">
+                {% elif guide.category.lower() == 'tang' %}
+                    <img src="https://www.pngall.com/wp-content/uploads/13/Chinese-Porcelain-Vase-PNG.png" alt="Tang artifact" class="artifact-img">
+                {% endif %}
             </div>
             <p class="subtitle">{{ guide.description }}</p>
         </header>
