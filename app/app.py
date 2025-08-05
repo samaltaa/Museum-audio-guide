@@ -1,15 +1,15 @@
-from fastapi import FastAPI, HTTPException, Request, Body 
+from fastapi import FastAPI, HTTPException, Request
 from databases import Database
 from sqlalchemy import create_engine
 from models import Guide, Track, Base
-from schemas import GuideCreate, TrackCreate
+from schemas import GuideCreate
 
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 
-DATABASE_URL = "postgresql://altagrasa:pinkelephant@localhost:5432/altagrasa" 
+DATABASE_URL = "" 
 database = Database(DATABASE_URL)
 
 app = FastAPI()
