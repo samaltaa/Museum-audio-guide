@@ -108,14 +108,14 @@ async def delete_guide(id: int):
     return {"message": f"Guide {id} and its tracks deleted successfully"}
 
 #endpoints for tracks
-# Get tracks for a specific guide (already covered in your guide detail)
+# Get tracks for a specific guide 
 @app.get("/guides/{guide_id}/tracks")
 async def get_guide_tracks(guide_id: int):
     query = Track.__table__.select().where(Track.__table__.c.guide_id == guide_id).order_by(Track.__table__.c.order_num)
     tracks = await database.fetch_all(query)
     return {"tracks": tracks}
 
-# Stream audio file - this is critical
+# Stream audio file 
 @app.get("/tracks/{track_id}/audio")
 async def stream_audio(track_id: int):
     track_query = Track.__table__.select().where(Track.__table__.c.id == track_id)
