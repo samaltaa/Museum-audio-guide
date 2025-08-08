@@ -1,29 +1,20 @@
-# fly.toml app configuration file generated for your-app-name-autumn-dream-1881 on 2025-08-08T13:49:34-04:00
+# fly.toml app configuration file generated for audioapp on 2025-08-08T14:01:45-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'your-app-name-autumn-dream-1881'
+app = 'audioapp'
 primary_region = 'fra'
 
-[experimental]
-  auto_rollback = true
-
 [build]
-  dockerfile = 'Dockerfile'
 
-[env]
-  PORT = '8080'
-
-[[services]]
-  protocol = 'tcp'
+[http_service]
   internal_port = 8080
-
-  [[services.ports]]
-    port = 80
-
-  [[services.ports]]
-    port = 443
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
 
 [[vm]]
   memory = '1gb'
