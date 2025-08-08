@@ -17,7 +17,7 @@
     {
       "id": 1,
       "title": "Welcome to Sokoto Caliphate",
-      "file_path": "../audio/sokoto/Introduction.mp3",
+      "file_path": "sokoto/Introduction.mp3",
       "duration": 180.5,
       "order_num": 1,
       "guide_id": 1
@@ -25,7 +25,7 @@
     {
       "id": 2,
       "title": "The Founding by Usman dan Fodio",
-      "file_path": "../audio/sokoto/Origins.mp3", 
+      "file_path": "sokoto/Origins.mp3", 
       "duration": 245.2,
       "order_num": 2,
       "guide_id": 1
@@ -33,7 +33,7 @@
     {
       "id": 3,
       "title": "Welcome to the Tang Dynasty",
-      "file_path": "../audio/tang/Introduction.mp3",
+      "file_path": "tang/Introduction.mp3",
       "duration": 165.9,
       "order_num": 1,
       "guide_id": 2
@@ -41,7 +41,7 @@
     {
       "id": 4,
       "title": "Tang Culture",
-      "file_path": "../audio/tang/Culture.mp3",
+      "file_path": "tang/Culture.mp3",
       "duration": 234.1,
       "order_num": 2,
       "guide_id": 2
@@ -49,7 +49,7 @@
     {
       "id": 5,
       "title": "Sokoto Buraucracy",
-      "file_path": "../audio/sokoto/Admin.mp3", 
+      "file_path": "sokoto/Admin.mp3", 
       "duration": 245.2,
       "order_num": 3,
       "guide_id": 1
@@ -57,7 +57,7 @@
     {
       "id": 6,
       "title": "The Fulani Jihad",
-      "file_path": "../audio/sokoto/Jihad.mp3", 
+      "file_path": "sokoto/Jihad.mp3", 
       "duration": 245.2,
       "order_num": 4,
       "guide_id": 1
@@ -65,7 +65,7 @@
     {
       "id": 7,
       "title": "Legacy",
-      "file_path": "../audio/sokoto/Legacy.mp3", 
+      "file_path": "sokoto/Legacy.mp3", 
       "duration": 245.2,
       "order_num": 5,
       "guide_id": 1
@@ -73,7 +73,7 @@
     {
       "id": 8,
       "title": "Trade and Commerce",
-      "file_path": "../audio/tang/Trade.mp3",
+      "file_path": "tang/Trade.mp3",
       "duration": 165.9,
       "order_num": 3,
       "guide_id": 2
@@ -81,7 +81,7 @@
     {
       "id": 9,
       "title": "Achievements",
-      "file_path": "../audio/tang/Achievements.mp3",
+      "file_path": "tang/Achievements.mp3",
       "duration": 165.9,
       "order_num": 4,
       "guide_id": 2
@@ -89,7 +89,7 @@
     {
       "id": 10,
       "title": "Sinosphere Legacy",
-      "file_path": "../audio/tang/Legacy.mp3",
+      "file_path": "tang/Legacy.mp3",
       "duration": 165.9,
       "order_num": 5,
       "guide_id": 2

@@ -144,4 +144,9 @@ async def stream_audio(track_id: int):
     if not track:
         raise HTTPException(status_code=404, detail="Track not found")
     
+    absolute_audio_path = BASE_DIR/ "audio" / track["file_path"]
+
+    if not absolute_audio_path.exists():
+            raise HTTPException(status_code=404, detail="Audio file not found")
+
     return FileResponse(track["file_path"], media_type="audio/mpeg")
