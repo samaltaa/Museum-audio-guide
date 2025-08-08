@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Request
-from .schemas import GuideCreate
+from schemas import GuideCreate
 
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
