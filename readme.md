@@ -1,6 +1,25 @@
-# 🏛️ Museum Audio Guide Platform
+# 🏛️ Museum Audio Guide App
 
 *A modern digital audio guide system designed specifically for museums and cultural institutions*
+
+# 🎧 App Demo
+
+> **🚀 [Live Demo Available Here](https://audioapp.fly.dev/) 🚀**
+
+[![Demo Status](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A//audioapp.fly.dev/)](https://audioapp.fly.dev/)
+
+---
+
+## 📱 Try it Now!
+
+**👆 Click the demo link above to explore interactive museum guides featuring:**
+
+- 🏛️ **Sokoto Caliphate Exhibition** - Rich history of the 1804 Islamic empire
+- 🏮 **Tang Dynasty Cultural Heritage** - Golden age of Chinese civilization (618-907 CE)
+- 🎵 **Streaming Audio Tracks** - Full audio guide experience
+- 📱 **Mobile-Friendly Interface** - Works on all devices
+
+---
 
 ## 📱 What This System Does
 
