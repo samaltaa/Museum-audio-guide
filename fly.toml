@@ -1,0 +1,31 @@
+# fly.toml app configuration file generated for your-app-name-autumn-dream-1881 on 2025-08-08T13:49:34-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'your-app-name-autumn-dream-1881'
+primary_region = 'fra'
+
+[experimental]
+  auto_rollback = true
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[env]
+  PORT = '8080'
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 8080
+
+  [[services.ports]]
+    port = 80
+
+  [[services.ports]]
+    port = 443
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
