@@ -1,35 +1,41 @@
 from fastapi import FastAPI, HTTPException, Request
-from databases import Database
-from sqlalchemy import create_engine
-from models import Guide, Track, Base
 from schemas import GuideCreate
 
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+import json
+import os
+from pathlib import Path
 
-
-DATABASE_URL = "postgresql://altagrasa:pinkelephant@localhost:5432/altagrasa" 
-database = Database(DATABASE_URL)
+# File path for JSON data
+DATA_FILE = Path("data/guides.json")
+DATA_FILE.parent.mkdir(exist_ok=True)
 
 app = FastAPI()
 templates = Jinja2Templates(directory="../templates")
 app.mount("/static", StaticFiles(directory="../static"), name="static")
 
+# Helper functions to replace database operations
+def load_data():
+    if DATA_FILE.exists():
+        with open(DATA_FILE, 'r') as f:
+            return json.load(f)
+    return {"guides": [], "tracks": [], "next_guide_id": 1, "next_track_id": 1}
+
+def save_data(data):
+    with open(DATA_FILE, 'w') as f:
+        json.dump(data, f, indent=2)
 
 @app.on_event("startup")
 async def startup():
-    engine = create_engine(DATABASE_URL)
-    Base.metadata.create_all(engine) 
-    await database.connect()
-
-@app.on_event("shutdown")
-async def shutdown():
-    await database.disconnect()
+    # Initialize JSON file if it doesn't exist
+    if not DATA_FILE.exists():
+        initial_data = {"guides": [], "tracks": [], "next_guide_id": 1, "next_track_id": 1}
+        save_data(initial_data)
 
 @app.get("/health")
 async def health():
-    await database.execute("SELECT 1")
     return {"status": "ok"}
 
 # Routes for guides 
@@ -43,38 +49,49 @@ async def homepage(request: Request):
 
 @app.post("/guides/")
 async def post_guide(payload: GuideCreate):
-    guide_query = Guide.__table__.insert().values(
-        title=payload.title,
-        description=payload.description,
-        category=payload.category
-    )
-    guide_id = await database.execute(guide_query)
+    data = load_data()
+    
+    guide_id = data["next_guide_id"]
+    
+    # Create guide
+    new_guide = {
+        "id": guide_id,
+        "title": payload.title,
+        "description": payload.description,
+        "category": payload.category
+    }
+    data["guides"].append(new_guide)
+    data["next_guide_id"] += 1
     
     # Insert tracks if provided
     if payload.tracks:
         for track_data in payload.tracks:
-            track_query = Track.__table__.insert().values(
-                title=track_data.title,
-                file_path=track_data.file_path,
-                duration=track_data.duration,
-                order_num=track_data.order_num,
-                guide_id=guide_id
-            )
-            await database.execute(track_query)
+            new_track = {
+                "id": data["next_track_id"],
+                "title": track_data.title,
+                "file_path": track_data.file_path,
+                "duration": track_data.duration,
+                "order_num": track_data.order_num,
+                "guide_id": guide_id
+            }
+            data["tracks"].append(new_track)
+            data["next_track_id"] += 1
     
+    save_data(data)
     return {"message": "guide saved", "guide_id": guide_id}
 
 @app.get("/guides/{id}", response_class=HTMLResponse)
 async def read_guide(request: Request, id: int):
-    guide_query = Guide.__table__.select().where(Guide.__table__.c.id == id)
-    guide = await database.fetch_one(guide_query)
-
+    data = load_data()
+    
+    # Find guide
+    guide = next((g for g in data["guides"] if g["id"] == id), None)
     if not guide:
         raise HTTPException(status_code=404, detail="Guide not found")
     
     # Get tracks for this guide
-    tracks_query = Track.__table__.select().where(Track.__table__.c.guide_id == id).order_by(Track.__table__.c.order_num)
-    tracks = await database.fetch_all(tracks_query)
+    tracks = [t for t in data["tracks"] if t["guide_id"] == id]
+    tracks.sort(key=lambda x: x["order_num"])
     
     return templates.TemplateResponse(
         request=request,
@@ -84,42 +101,41 @@ async def read_guide(request: Request, id: int):
 
 @app.get("/guides/")
 async def list_guides():
-    query = Guide.__table__.select()
-    guides = await database.fetch_all(query)
-    return {"guides": guides}
+    data = load_data()
+    return {"guides": data["guides"]}
 
 @app.delete("/guides/{id}")
 async def delete_guide(id: int):
-    # First check if guide exists
-    guide_query = Guide.__table__.select().where(Guide.__table__.c.id == id)
-    guide = await database.fetch_one(guide_query)
+    data = load_data()
     
+    # First check if guide exists
+    guide = next((g for g in data["guides"] if g["id"] == id), None)
     if not guide:
         raise HTTPException(status_code=404, detail="Guide not found")
     
-    # Delete tracks first (due to foreign key constraint)
-    tracks_delete_query = Track.__table__.delete().where(Track.__table__.c.guide_id == id)
-    await database.execute(tracks_delete_query)
+    # Delete tracks first
+    data["tracks"] = [t for t in data["tracks"] if t["guide_id"] != id]
     
     # Then delete the guide
-    guide_delete_query = Guide.__table__.delete().where(Guide.__table__.c.id == id)
-    await database.execute(guide_delete_query)
+    data["guides"] = [g for g in data["guides"] if g["id"] != id]
     
+    save_data(data)
     return {"message": f"Guide {id} and its tracks deleted successfully"}
 
 #endpoints for tracks
 # Get tracks for a specific guide 
 @app.get("/guides/{guide_id}/tracks")
 async def get_guide_tracks(guide_id: int):
-    query = Track.__table__.select().where(Track.__table__.c.guide_id == guide_id).order_by(Track.__table__.c.order_num)
-    tracks = await database.fetch_all(query)
+    data = load_data()
+    tracks = [t for t in data["tracks"] if t["guide_id"] == guide_id]
+    tracks.sort(key=lambda x: x["order_num"])
     return {"tracks": tracks}
 
 # Stream audio file 
 @app.get("/tracks/{track_id}/audio")
 async def stream_audio(track_id: int):
-    track_query = Track.__table__.select().where(Track.__table__.c.id == track_id)
-    track = await database.fetch_one(track_query)
+    data = load_data()
+    track = next((t for t in data["tracks"] if t["id"] == track_id), None)
     
     if not track:
         raise HTTPException(status_code=404, detail="Track not found")
