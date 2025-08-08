@@ -6,7 +6,7 @@
 
 > **🚀 [Live Demo Available Here](https://audioapp.fly.dev/) 🚀**
 
-[![Demo Status](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A//audioapp.fly.dev/)](https://audioapp.fly.dev/)
+[![Demo Status](https://img.shields.io/website?down_color=green&down_message=online&up_color=green&up_message=online&url=https%3A//audioapp.fly.dev/)](https://audioapp.fly.dev/)
 
 ---
 
