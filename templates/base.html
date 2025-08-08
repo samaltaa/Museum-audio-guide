@@ -14,7 +14,8 @@
         </header>
 
         <div class="exhibits">
-            <a href="/guides/1" class="exhibit-card">
+            {% for guide in guides %}
+            <a href="/guides/{{guide.id}}" class="exhibit-card">
                 <div class="exhibit-image sokoto-image"></div>
                 <div class="exhibit-content">
                     <div class="exhibit-title">Sokoto Caliphate</div>
@@ -28,7 +29,7 @@
                 </div>
             </a>
 
-            <a href="/guides/2" class="exhibit-card">
+            <a href="/guides/{{guide.id}}" class="exhibit-card">
                 <div class="exhibit-image tang-image"></div>
                 <div class="exhibit-content">
                     <div class="exhibit-title">Tang Dynasty</div>
@@ -41,6 +42,7 @@
                     </div>
                 </div>
             </a>
+            {% endfor %}
         </div>
     </div>
 </body>

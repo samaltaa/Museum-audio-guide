@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Request
-from .schemas import GuideCreate
+from schemas import GuideCreate
 
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
@@ -11,7 +11,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent  # go up from app/ to project root
 
 # File path for JSON data
-DATA_FILE = Path("data/guides.json")
+DATA_FILE = Path(__file__).resolve().parent / "data" / "guides.json"
 DATA_FILE.parent.mkdir(exist_ok=True)
 
 app = FastAPI()
@@ -43,10 +43,12 @@ async def health():
 # Routes for guides 
 @app.get("/", response_class=HTMLResponse)
 async def homepage(request: Request):
+    data = load_data()
+    guides = data["guides"]
     return templates.TemplateResponse(
         request=request,
         name="base.html",
-        context={}
+        context={"guides": guides}
     )
 
 @app.post("/guides/")
