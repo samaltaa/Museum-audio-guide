@@ -8,13 +8,15 @@ import json
 import os
 from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent.parent  # go up from app/ to project root
+
 # File path for JSON data
 DATA_FILE = Path("data/guides.json")
 DATA_FILE.parent.mkdir(exist_ok=True)
 
 app = FastAPI()
-templates = Jinja2Templates(directory="../templates")
-app.mount("/static", StaticFiles(directory="../static"), name="static")
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
 # Helper functions to replace database operations
 def load_data():
